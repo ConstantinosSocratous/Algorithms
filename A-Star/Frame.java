@@ -85,7 +85,7 @@ public class Frame extends JFrame{
         nodes[8][10].setStatus(-1);
         nodes[9][10].setStatus(-1);
         nodes[10][9].setStatus(-1);
-        nodes[10][8].setStatus(-1);
+
         nodes[10][7].setStatus(-1);
         nodes[10][6].setStatus(-1);
         nodes[10][5].setStatus(-1);
@@ -247,7 +247,7 @@ public class Frame extends JFrame{
                     n.gScore = cost;
                     n.setFScore(cost + Node.getDistance(goal, n));
                     if(!explored.contains(n))
-                    n.setParent(current);
+                        n.setParent(current);
                     queue.add(n);
                 }else{
                     
