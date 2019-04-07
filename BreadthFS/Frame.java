@@ -2,6 +2,8 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.util.*;
+import java.util.Queue;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -16,7 +18,7 @@ public class Frame extends JFrame{
     private Node[][] nodes;
     private NodePanel nodePanel;
 
-    private int startRow=3, startCol=3 , endRow=22, endCol=23;
+    private int startRow=3, startCol=3 , endRow=21, endCol=20;
 
     public static void main(String[] args){
         new Frame();
@@ -28,7 +30,7 @@ public class Frame extends JFrame{
 
     private void init(){
         setResizable(false);
-        this.setTitle("PATH FINDER USING A*");
+        this.setTitle("PATH FINDER USING BREADTH FIRST SEARCH");
         this.getContentPane().setPreferredSize(new Dimension(1015,880));
 
         JPanel main = new JPanel(new BorderLayout());
@@ -179,25 +181,10 @@ public class Frame extends JFrame{
 
     private void search(Node start, Node goal){
         
-        calculateGScores(start,goal);
 
-        //start.setStatus(2); 
-        //goal.setStatus(3);
-        //nodePanel.paintAgain();
-        
-        //CLOSE LIST
         HashSet<Node> explored = new HashSet<Node>();
         
-        //OPEN LIST
-        PriorityQueue<Node> queue = new PriorityQueue<Node>(GRID_SIZE*GRID_SIZE,new Comparator<Node>(){
-            public int compare(Node a, Node b){
-                if(a.getFScore() > b.getFScore()){
-                    return 1;
-                }else {
-                    return -1;
-                }
-            }
-        });
+        MyQueue queue = new MyQueue(GRID_SIZE*GRID_SIZE*GRID_SIZE);
 
         queue.add(start);
         boolean found = false;
@@ -205,22 +192,20 @@ public class Frame extends JFrame{
 
         while((!queue.isEmpty())&&(!found)){
             
-            Node current = queue.poll();
+            Node current = queue.get();
             while(explored.contains(current)){
-                current = queue.poll();
+                current = queue.get();
             }
 
             counter++;
             if(!current.equals(start)){
                 current.setStatus(6);
             }
-            nodePanel.repaint();
 
             explored.add(current);
             
             try{
-                nodePanel.repaint();
-                Thread.sleep(60);
+               Thread.sleep(50);
                 
             }catch(Exception e){
                 e.printStackTrace();
@@ -236,36 +221,26 @@ public class Frame extends JFrame{
             //check every child of current node
             for(Node n : getAdjacents(current)){
             
-                //int gScore = Node.getDistance(start, current);
-                int hScore = Node.getDistance(current, n);
-                int cost = current.gScore + hScore;
-                
-                
                 if(explored.contains(n))
-                continue;
+                    continue;
 
-
-                if( (n.gScore != 0 ) || cost < n.gScore ){
-                    n.gScore = cost;
-                    n.setFScore(cost + Node.getDistance(goal, n));
-                    if(!explored.contains(n))
-                        n.setParent(current);
-                    queue.add(n);
-                }else{
-                    
-                }
-
-                n.setStatus(4);
-
-
-                nodePanel.repaint();
-
+                queue.add(n);
+                n.setParent(current);
             
+                
+                n.setStatus(4);
                 goal.setStatus(3);
                 start.setStatus(2);
+                
+            }
+
+            if(queue.isEmpty()){
+                System.out.println("EMPTY");
             }
             
             current.setStatus(5);
+
+            nodePanel.repaint();
         }
         
         goal.setStatus(3);
