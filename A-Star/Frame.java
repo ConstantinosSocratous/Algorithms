@@ -16,7 +16,7 @@ public class Frame extends JFrame{
     private Node[][] nodes;
     private NodePanel nodePanel;
 
-    private int startRow=3, startCol=3 , endRow=22, endCol=23;
+    private int startRow=20, startCol=3 , endRow=2, endCol=23;
 
     public static void main(String[] args){
         new Frame();
@@ -74,28 +74,47 @@ public class Frame extends JFrame{
 
 
 
-        nodes[0][10].setStatus(-1);
-        nodes[1][10].setStatus(-1);
-        nodes[2][10].setStatus(-1);
-        nodes[3][10].setStatus(-1);
-        nodes[4][10].setStatus(-1);
-        nodes[5][10].setStatus(-1);
-        nodes[7][10].setStatus(-1);
-        nodes[8][10].setStatus(-1);
-        nodes[9][10].setStatus(-1);
-        nodes[10][9].setStatus(-1);
+        // nodes[0][10].setStatus(-1);
+        // nodes[1][10].setStatus(-1);
+        // nodes[2][10].setStatus(-1);
+        // nodes[3][10].setStatus(-1);
+        // nodes[4][10].setStatus(-1);
+        // nodes[5][10].setStatus(-1);
+        // nodes[7][10].setStatus(-1);
+        // nodes[8][10].setStatus(-1);
+        // nodes[9][10].setStatus(-1);
+        // nodes[10][9].setStatus(-1);
 
-        nodes[10][7].setStatus(-1);
-        nodes[10][6].setStatus(-1);
-        nodes[10][5].setStatus(-1);
-        nodes[10][4].setStatus(-1);
-        nodes[10][3].setStatus(-1);
+        // nodes[10][7].setStatus(-1);
+        // nodes[10][6].setStatus(-1);
+        // nodes[10][5].setStatus(-1);
+        // nodes[10][4].setStatus(-1);
+        // nodes[10][3].setStatus(-1);
 
-        nodes[10][2].setStatus(-1);
-        nodes[10][2].setStatus(-1);
-        nodes[9][15].setStatus(-1);
-        nodes[10][15].setStatus(-1);
+        // node s[10][2].setStatus(-1);
+        // nodes[10][2].setStatus(-1);
+        // nodes[9][15].setStatus(-1);
+        // nodes[10][15].setStatus(-1);
 
+
+        // search(nodes[startRow][startCol], nodes[endRow][endCol]);
+        createRandom();
+    }
+
+    private void createRandom(){
+        Random rand = new Random();
+
+        for(int i=0; i<GRID_SIZE; i++){
+            for(int j=0; j<GRID_SIZE; j++){
+                int temp = rand.nextInt(5)+1;
+                if(temp == 3){
+                    nodes[i][j].setStatus(-1);
+                }
+            }
+        }
+
+        nodes[startRow][startCol].setStatus(2);
+        nodes[endRow][endCol].setStatus(3);
 
         search(nodes[startRow][startCol], nodes[endRow][endCol]);
     }
@@ -273,6 +292,8 @@ public class Frame extends JFrame{
         System.out.println("Counter " + counter);
 
         showPath(start,goal);
+
+        if(!found)  System.out.println("No solution found");
         //printPath(start, goal);
 
     }
@@ -307,7 +328,7 @@ public class Frame extends JFrame{
         Collections.reverse(ans);
         for(Node node: ans){
             node.setStatus(1);
-            System.out.println(node.getRow()+","+node.getCol());
+            //System.out.println(node.getRow()+","+node.getCol());
         }
 
         goal.setStatus(3);

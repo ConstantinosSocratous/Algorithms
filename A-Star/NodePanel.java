@@ -18,6 +18,7 @@ public class NodePanel extends JPanel{
                 int y=me.getY();
                 changeStatus(getNodeFromPosition(x,y));
             } 
+
           }); 
 
     }
